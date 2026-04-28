@@ -1,6 +1,5 @@
 {
-  "buildCommand": "npm install && npm run build",
+  "buildCommand": "cd food && npm install && npm run build",
   "outputDirectory": "food/dist",
-  "installCommand": "npm install",
-  "framework": "vite"
+  "installCommand": "cd food && npm install"
 }
