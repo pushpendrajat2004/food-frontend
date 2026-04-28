@@ -1,0 +1,12 @@
+{
+  "name": "food-frontend",
+  "version": "1.0.0",
+  "description": "Food delivery frontend",
+  "private": true,
+  "scripts": {
+    "install": "cd food && npm install",
+    "build": "cd food && npm run build",
+    "dev": "cd food && npm run dev",
+    "preview": "cd food && npm run preview"
+  }
+}

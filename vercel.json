@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd food && npm install && npm run build",
-  "outputDirectory": "food/dist",
-  "installCommand": "cd food && npm install"
+  "buildCommand": "npm --prefix ./food install && npm --prefix ./food run build",
+  "outputDirectory": "./food/dist",
+  "installCommand": "npm --prefix ./food install"
 }
