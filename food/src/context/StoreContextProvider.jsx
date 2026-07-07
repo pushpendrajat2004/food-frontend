@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { StoreContext } from './StoreContext'
-import { food_list } from '../assets/assets'
 
 const StoreContextProvider = ({ children }) => {
-    
   const [cartItems, setCartItems] = useState({})
+  const url = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+  const [token, setToken] = useState('')
+  const [foodList, setFoodList] = useState([])
 
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] ?? 0) + 1 }))
@@ -21,24 +23,54 @@ const StoreContextProvider = ({ children }) => {
     })
   }
 
-  const  getTotalCartAmount= ()=>{
-    let totalAmount=0;
-    for(const item in cartItems){
-      if(cartItems[item]>0){
-      let itemInfo=food_list.find((product)=>product._id===item)
-      totalAmount+= itemInfo.price*cartItems[item];
+  const getTotalCartAmount = () => {
+    let totalAmount = 0
+    for (const item in cartItems) {
+      if (cartItems[item] > 0) {
+        const itemInfo = foodList.find((product) => product._id === item)
+        if (itemInfo) {
+          totalAmount += itemInfo.price * cartItems[item]
+        }
       }
     }
-    return totalAmount;
+    return totalAmount
   }
 
+  const fetchFoodList = async () => {
+    try {
+      const response = await axios.get(`${url}/api/food/list`)
+      if (response?.data?.success) {
+        setFoodList(response.data.data || [])
+      } else {
+        setFoodList([])
+      }
+    } catch (error) {
+      console.error('Failed to fetch food list:', error)
+      setFoodList([])
+    }
+  }
+
+  useEffect(() => {
+    const loadData = async () => {
+      await fetchFoodList()
+      const storedToken = localStorage.getItem('token')
+      if (storedToken) {
+        setToken(storedToken)
+      }
+    }
+    loadData()
+  }, [])
+
   const contextValue = {
-    food_list,
+    food_list: foodList,
     cartItems,
     setCartItems,
     addToCart,
     removeFromCart,
-    getTotalCartAmount
+    getTotalCartAmount,
+    url,
+    token,
+    setToken
   }
 
   return <StoreContext.Provider value={contextValue}>{children}</StoreContext.Provider>
