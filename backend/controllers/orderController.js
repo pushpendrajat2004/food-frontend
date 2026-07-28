@@ -11,6 +11,9 @@ const razorPayInstance = new razorpay({
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
+
+    const frontend_url = "http://localhost:5173/"
+
     try {
         // 1. Create and save the order in your MongoDB database
         const newOrder = new orderModel({
