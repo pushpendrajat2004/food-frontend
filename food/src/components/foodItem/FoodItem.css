@@ -34,9 +34,9 @@
     margin-bottom: 15px;
 }
 .food-item-price{
-    color: tomato;
+    color: var(--brand-yellow);
     font-size: 22px;
-    font-weight: 500;
+    font-weight: 700;
     margin: 10px 0px;
 }
 .food-item-img-container{

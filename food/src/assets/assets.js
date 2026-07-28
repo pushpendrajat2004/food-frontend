@@ -299,10 +299,10 @@ export const food_list = [
     },
     {
         _id: "26",
-        name: "Tomato Pasta",
+        name: "Kannu's Basil Pasta",
         image: food_26,
         price: 18,
-        description: "Food provides essential nutrients for overall health and well-being",
+        description: "A rich, creamy pasta tossed with savory herb sauce and chef's signature spice mix.",
         category: "Pasta"
     }, {
         _id: "27",

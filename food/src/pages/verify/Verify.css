@@ -8,10 +8,10 @@
   width: 100px;
   height: 100px;
   place-self: center;
-  border: 5px solid #bdbdbd;
-  border-top-color: tomato;
+  border: 5px solid rgba(246,214,0,0.3);
+  border-top-color: var(--brand-yellow);
   border-radius: 50%;
-  animation: rotate 1s infinite linear;
+  animation: spin 1s infinite linear;
 }
 
 @keyframes rotate {

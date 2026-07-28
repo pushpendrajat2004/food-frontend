@@ -26,7 +26,7 @@ const Verify = () => {
       const response = await axios.post(
         `${url}/api/order/verify`,
         { orderId, razorpay_payment_id, razorpay_order_id, razorpay_signature },
-        { headers: { token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.data.success) {

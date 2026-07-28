@@ -7,7 +7,7 @@ import axios from "axios"
 
 const LoginPopup = ({setShowLogin}) => {
 
-    const {url,setToken}= useContext(StoreContext)
+    const {url,setToken,setIsAdmin}= useContext(StoreContext)
 
     const [currState,setCurrState]=useState("Login")
     const [data, setData]=useState({
@@ -15,6 +15,8 @@ const LoginPopup = ({setShowLogin}) => {
       email:"",
       password:""
     })
+    const [adminLogin, setAdminLogin] = useState(false)
+    const [status, setStatus] = useState('')
 
     const onChangeHandler = (event)=>{
       const name= event.target.name;
@@ -32,21 +34,34 @@ const LoginPopup = ({setShowLogin}) => {
         newUrl += "/api/user/register"
       }
 
+      const payload = { ...data }
+      if (currState === 'Login' && adminLogin) {
+        payload.adminLogin = true
+      }
+
       try {
-        const response = await axios.post(newUrl, data);
+        const response = await axios.post(newUrl, payload);
         console.log("Response:", response.data); // Debug log
 
-        if(response.data.success){
+        if (response.data.success) {
           setToken(response.data.token);
           localStorage.setItem("token", response.data.token);
+          setIsAdmin(currState === 'Login' && adminLogin);
+          setStatus('Login successful')
           console.log("Token saved:", response.data.token); // Debug log
           setShowLogin(false);
-        }else{
-          alert(response.data.message)
+        } else {
+          setIsAdmin(false);
+          setStatus(response.data.message || 'Login failed')
         }
       } catch (error) {
-        console.error("Login error:", error); // Debug log
-        alert("An error occurred. Check console for details.");
+        console.error("Login error:", error)
+        const message =
+          error.response?.data?.message ||
+          error.response?.statusText ||
+          error.message ||
+          "An unexpected error occurred"
+        setStatus(message)
       }
     }
 
@@ -67,8 +82,17 @@ const LoginPopup = ({setShowLogin}) => {
             <input type='checkbox' required />
             <p>By continuing, I agree to the terms of use & privacy policy.</p>
         </div>
+        {status && <p className='login-status'>{status}</p>}
         {currState==='Login'
-        ?<p>Create a new account? <span onClick={()=>setCurrState("Sign Up")}>click here</span></p>
+        ?<>
+          <div className='admin-login-row'>
+            <label>
+              <input type='checkbox' checked={adminLogin} onChange={() => setAdminLogin(!adminLogin)} />
+              Login as admin
+            </label>
+          </div>
+          <p>Create a new account? <span onClick={()=>setCurrState("Sign Up")}>click here</span></p>
+        </>
         :<p>lready havbe an account? <span onClick={()=>setCurrState("Login")}>Login here</span></p>
         }
       </form>

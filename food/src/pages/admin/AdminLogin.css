@@ -1,0 +1,29 @@
+.admin-login {
+  padding: 40px;
+}
+.admin-login-form {
+  max-width: 420px;
+  margin: 0 auto;
+  display: grid;
+  gap: 15px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+.admin-login-form input {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+}
+.admin-login-form button {
+  border: none;
+  background: #ff5533;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.error {
+  color: #d92d2d;
+}

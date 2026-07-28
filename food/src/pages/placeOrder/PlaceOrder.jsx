@@ -47,7 +47,11 @@ const PlaceOrder = () => {
 
       try {
         // 2. Contact your express backend endpoint
-        let response = await axios.post(url + "/api/order/place", orderData, { headers: { token } })
+        let response = await axios.post(
+          url + "/api/order/place",
+          orderData,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
     
         if (response.data.success) {
           // Deconstruct values returned from your completed backend script
@@ -58,8 +62,8 @@ const PlaceOrder = () => {
             key: "rzp_test_TFlaqFXHdziDyF", // Replace with your actual RAZORPAY_KEY_ID
             amount: razorpayOrder.amount,         // Amount in paisa coming from server
             currency: razorpayOrder.currency,
-            name: "Food Delivery App",
-            description: "Complete your meal order payment",
+            name: "Kannu's Kitchen",
+            description: "Secure payment for your Kannu's meal order",
             order_id: razorpayOrder.id,           // The crucial ID created by your backend instance
             handler: async function (paymentResponse) {
               // This block runs automatically when the user types pin and pays successfully!
@@ -72,7 +76,11 @@ const PlaceOrder = () => {
                   razorpay_signature: paymentResponse.razorpay_signature
                 }
             
-                let verifyResponse = await axios.post(url + "/api/order/verify", verifyData, { headers: { token } })
+                let verifyResponse = await axios.post(
+                  url + "/api/order/verify",
+                  verifyData,
+                  { headers: { Authorization: `Bearer ${token}` } }
+                )
             
                 if (verifyResponse.data.success) {
                   alert("Order placed successfully!")
@@ -164,7 +172,7 @@ const PlaceOrder = () => {
             </div>
           </div>
 
-          <button type='submit'>ProCEED TO PAYMENT</button>
+          <button type='submit'>Place order & pay</button>
         </div>
 
       </div>

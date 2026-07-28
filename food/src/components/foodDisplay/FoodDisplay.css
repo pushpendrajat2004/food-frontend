@@ -11,4 +11,5 @@
     gap: 30px;
     margin-top: 30px;
     row-gap: 50px;
+    animation: fadeIn 1s ease;
 }

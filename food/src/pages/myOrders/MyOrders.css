@@ -13,27 +13,34 @@
     align-items: center;
     gap: 30px;
     font-size: 14px;
-    padding: 10px 20px;
-    color: #454545;
-    border: 1px solid tomato;
+    padding: 18px 20px;
+    color: var(--text-primary);
+    border: 1px solid rgba(246,214,0,0.35);
+    background: rgba(255,214,0,0.06);
+    border-radius: 18px;
+    animation: popIn 0.8s ease;
 }
 .my-orders-order img{
     width: 50px;
 }
 .my-orders-order p span{
-    color: tomato;
+    color: var(--brand-yellow);
 }
 .my-orders-order p b{
-    font-weight: 500;
-    color: #454545;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 .my-orders-order button{
-    padding: 12px 0px;
+    padding: 12px 14px;
     border: none;
-    border-radius: 5px;
-    background-color: #ffe1e1;
-    color: #454545;
+    border-radius: 999px;
+    background-color: var(--brand-yellow);
+    color: var(--brand-black);
     cursor: pointer;
+    transition: transform 0.25s ease;
+}
+.my-orders-order button:hover{
+    transform: translateY(-2px);
 }
 
 @media (max-width: 900px){

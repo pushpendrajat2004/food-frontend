@@ -11,21 +11,16 @@ const razorPayInstance = new razorpay({
 
 // placing user order for frontend
 const placeOrder = async (req, res) => {
-
-    const frontend_url = "http://localhost:5173/"
-
     try {
-        // 1. Create and save the order in your MongoDB database
         const newOrder = new orderModel({
-            userId : req.body.userId,
+            userId: req.userId,
             items: req.body.items,
             amount: req.body.amount,
             address: req.body.address,
         })
         await newOrder.save()
 
-        // FIX: Fixed variable casing typo (changed req.body.userid to req.body.userId)
-        await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} }) // clear cart after placing order
+        await userModel.findByIdAndUpdate(req.userId, { cartData: {} })
         
         // 2. Prepare the parameters for Razorpay
         // Note: Razorpay accepts amount in PAISA. (1 INR = 100 Paisa). Multiply your amount by 100.
@@ -102,13 +97,13 @@ const verifyOrder = async (req, res) => {
 
 
 // user Order for frontend
-const userOrders = async (req,res) => {
-    try{
-        const orders = await orderModel.find({userId: req.body.userId})
-        res.json({success: true, data: orders})
+const userOrders = async (req, res) => {
+    try {
+        const orders = await orderModel.find({ userId: req.userId })
+        res.json({ success: true, data: orders })
     } catch (error) {
-        console.log(error)
-        res.json({success: false, message: "Error"})
+        console.error(error)
+        res.status(500).json({ success: false, message: 'Error fetching orders' })
     }
 }
 

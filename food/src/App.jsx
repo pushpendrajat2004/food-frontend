@@ -8,6 +8,8 @@ import Footer from './components/footer/Footer.jsx'
 import LoginPopup from './components/loginPopup/LoginPopup.jsx'
 import Verify from './pages/verify/Verify.jsx'
 import MyOrders from './pages/myOrders/MyOrders.jsx'
+import AdminHome from './pages/admin/AdminHome.jsx'
+import AdminRoute from './components/admin/AdminRoute.jsx'
 
 const App = () => {
 
@@ -26,6 +28,7 @@ const App = () => {
         <Route path='/order' element={<PlaceOrder/>} />
         <Route path='/verify' element={<Verify/>}></Route>
         <Route path='/myorders' element={<MyOrders/>}></Route>
+        <Route path='/admin' element={<AdminRoute><AdminHome/></AdminRoute>} />
         <Route path='*' element={<Home/>} />
       </Routes>
     </div>

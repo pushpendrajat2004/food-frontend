@@ -4,15 +4,23 @@ import { StoreContext } from './StoreContext'
 
 const StoreContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({})
-  const url = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+  const url =
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.DEV ? 'http://localhost:4000' : window.location.origin)
   const [token, setToken] = useState('')
   const [foodList, setFoodList] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [authReady, setAuthReady] = useState(false)
 
   const addToCart = async (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: (prev[itemId] ?? 0) + 1 }))
 
-    if(token){
-      await axios.post(url+"/api/cart/add", {itemId}, {headers:{token}})
+    if (token) {
+      await axios.post(
+        url + "/api/cart/add",
+        { itemId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
     }
   }
 
@@ -26,8 +34,12 @@ const StoreContextProvider = ({ children }) => {
       return { ...prev, [itemId]: current - 1 }
     })
 
-    if(token){
-      await axios.post(url+"/api/cart/remove",{itemId},{headers:{token}})
+    if (token) {
+      await axios.post(
+        url + "/api/cart/remove",
+        { itemId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
     }
   }
 
@@ -59,8 +71,23 @@ const StoreContextProvider = ({ children }) => {
   }
 
   const loadCartData = async (token) => {
-    const response = await axios.post(url+"/api/cart/get",{}, {headers:{token}})
+    const response = await axios.post(
+      url + "/api/cart/get",
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
     setCartItems(response.data.cartData)
+  }
+
+  const verifyAdminToken = async (token) => {
+    try {
+      const response = await axios.get(`${url}/api/admin/verify`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setIsAdmin(response.data.success)
+    } catch (error) {
+      setIsAdmin(false)
+    }
   }
 
   useEffect(() => {
@@ -69,8 +96,9 @@ const StoreContextProvider = ({ children }) => {
       const storedToken = localStorage.getItem('token')
       if (storedToken) {
         setToken(storedToken)
-        await loadCartData(storedToken)
+        await Promise.all([loadCartData(storedToken), verifyAdminToken(storedToken)])
       }
+      setAuthReady(true)
     }
     loadData()
   }, [])
@@ -84,7 +112,10 @@ const StoreContextProvider = ({ children }) => {
     getTotalCartAmount,
     url,
     token,
-    setToken
+    setToken,
+    isAdmin,
+    setIsAdmin,
+    authReady,
   }
 
   return <StoreContext.Provider value={contextValue}>{children}</StoreContext.Provider>

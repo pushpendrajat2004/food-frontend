@@ -13,10 +13,10 @@ const Cart = () => {
 
       <div className="cart-items">
         <div className="cart-items-title">
-          <p>Items</p>
-          <p>Title</p>
+          <p>Product</p>
+          <p>Details</p>
           <p>Price</p>
-          <p>Quantity</p>
+          <p>Qty</p>
           <p>Total</p>
           <p>Remove</p>
         </div>
@@ -65,16 +65,16 @@ const Cart = () => {
               <b>$ {getTotalCartAmount()===0?0:getTotalCartAmount()+10}</b>
             </div>
           </div>
-          <button onClick={()=>navigate('/order')}>ProCEED TO CHECKOUT</button>
+          <button onClick={()=>navigate('/order')}>Proceed to Checkout</button>
 
         </div>
 
         <div className="cart-promocode">
           <div>
-            <p>If you have a promo code, Enter it here</p>
+            <p>Have a special discount code? Apply it here.</p>
             <div className="cart-promocode-input">
-              <input type="text" placeholder="promo code" />
-              <button>Submit</button>
+              <input type="text" placeholder="Enter promo code" />
+              <button>Apply</button>
             </div>
           </div>
         </div>
